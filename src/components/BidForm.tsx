@@ -1,7 +1,6 @@
 "use client"
 
 import { useState } from "react"
-
 import { Gavel } from "lucide-react"
 
 import {
@@ -13,9 +12,7 @@ import {
     invokeContract,
 } from "@/lib/contract"
 
-import {
-    toast,
-} from "sonner"
+import { toast } from "sonner"
 
 export default function BidForm({
     publicKey,
@@ -106,11 +103,11 @@ export default function BidForm({
                 <label
                     htmlFor="amount"
                     className="
-                        block
-                        text-sm
-                        font-medium
-                        text-zinc-300
-                    "
+            block
+            text-sm
+            font-medium
+            text-zinc-300
+          "
                 >
                     Bid Amount
                 </label>
@@ -128,19 +125,19 @@ export default function BidForm({
                         )
                     }
                     className="
-                        mt-2
-                        w-full
-                        rounded-xl
-                        border
-                        border-zinc-700
-                        bg-zinc-900
-                        px-4
-                        py-3
-                        text-white
-                        outline-none
-                        focus:ring-2
-                        focus:ring-indigo-500
-                    "
+            mt-2
+            w-full
+            rounded-xl
+            border
+            border-zinc-700
+            bg-zinc-900
+            px-4
+            py-3
+            text-white
+            outline-none
+            focus:ring-2
+            focus:ring-indigo-500
+          "
                 />
 
             </div>
@@ -149,20 +146,20 @@ export default function BidForm({
                 type="submit"
                 disabled={loading}
                 className="
-                    w-full
-                    bg-indigo-600
-                    hover:bg-indigo-500
-                    disabled:opacity-50
-                    text-white
-                    py-3
-                    rounded-xl
-                    font-semibold
-                    flex
-                    items-center
-                    justify-center
-                    gap-2
-                    transition-all
-                "
+          w-full
+          bg-indigo-600
+          hover:bg-indigo-500
+          disabled:opacity-50
+          text-white
+          py-3
+          rounded-xl
+          font-semibold
+          flex
+          items-center
+          justify-center
+          gap-2
+          transition-all
+        "
             >
 
                 <Gavel size={18} />
