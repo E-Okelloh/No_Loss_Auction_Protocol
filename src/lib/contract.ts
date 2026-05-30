@@ -6,7 +6,6 @@ import {
     Networks,
     TransactionBuilder,
     BASE_FEE,
-    nativeToScVal,
     scValToNative,
 } from "@stellar/stellar-sdk"
 
@@ -37,25 +36,35 @@ export async function invokeContract({
 }) {
 
     const account =
-        await server.getAccount(publicKey)
-
-    let tx = new TransactionBuilder(account, {
-        fee: BASE_FEE,
-        networkPassphrase:
-            Networks.TESTNET,
-    })
-
-        .addOperation(
-            contract.call(
-                method,
-                ...args
-            )
+        await server.getAccount(
+            publicKey
         )
 
-        .setTimeout(300)
-        .build()
+    let tx =
+        new TransactionBuilder(
+            account,
+            {
+                fee: BASE_FEE,
+                networkPassphrase:
+                    Networks.TESTNET,
+            }
+        )
 
-    tx = await server.prepareTransaction(tx)
+            .addOperation(
+                contract.call(
+                    method,
+                    ...args
+                )
+            )
+
+            .setTimeout(300)
+
+            .build()
+
+    tx =
+        await server.prepareTransaction(
+            tx
+        )
 
     const signed =
         await signTransaction(
@@ -67,11 +76,10 @@ export async function invokeContract({
         )
 
     const signedTx =
-        TransactionBuilder
-            .fromXDR(
-                signed.signedTxXdr,
-                Networks.TESTNET
-            )
+        TransactionBuilder.fromXDR(
+            signed.signedTxXdr,
+            Networks.TESTNET
+        )
 
     return await server.sendTransaction(
         signedTx
@@ -80,30 +88,46 @@ export async function invokeContract({
 
 export async function getAuction() {
 
-    const result =
-        await server.simulateTransaction(
-
-            new TransactionBuilder(
-                await server.getAccount(
-                    "GAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAWHF"
-                ),
-                {
-                    fee: BASE_FEE,
-                    networkPassphrase:
-                        Networks.TESTNET,
-                }
-            )
-
-                .addOperation(
-                    contract.call("get_auction")
-                )
-
-                .setTimeout(300)
-                .build()
+    const account =
+        await server.getAccount(
+            "GAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAWHF"
         )
 
-    // @ts-ignore
-    return scValToNative(
-        result.result?.retval
-    )
+    const tx =
+        new TransactionBuilder(
+            account,
+            {
+                fee: BASE_FEE,
+                networkPassphrase:
+                    Networks.TESTNET,
+            }
+        )
+
+            .addOperation(
+                contract.call(
+                    "get_auction"
+                )
+            )
+
+            .setTimeout(300)
+
+            .build()
+
+    const result =
+        await server.simulateTransaction(
+            tx
+        )
+
+    if (
+        "result" in result &&
+        result.result &&
+        result.result.retval
+    ) {
+
+        return scValToNative(
+            result.result.retval
+        )
+    }
+
+    return null
 }

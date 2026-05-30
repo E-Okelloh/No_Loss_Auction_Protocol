@@ -3,8 +3,8 @@
 import { Wallet } from "lucide-react"
 
 import {
-    requestAccess,
-} from "@stellar/freighter-api"
+    connectWallet,
+} from "@/lib/wallet"
 
 export default function ConnectWallet({
     setPublicKey,
@@ -13,47 +13,21 @@ export default function ConnectWallet({
     (key: string) => void
 }) {
 
-    async function connectWallet() {
-
-        console.log("CONNECT CLICKED")
+    async function handleConnect() {
 
         try {
 
-            const result =
-                await requestAccess()
+            const publicKey =
+                await connectWallet()
 
-            console.log(result)
+            setPublicKey(publicKey)
 
-            if ("error" in result) {
+        } catch (error) {
 
-                alert(result.error)
-
-                return
-            }
-
-            if (!result.address) {
-
-                alert(
-                    "No address returned"
-                )
-
-                return
-            }
-
-            setPublicKey(
-                result.address
-            )
+            console.error(error)
 
             alert(
-                "Wallet connected!"
-            )
-
-        } catch (err) {
-
-            console.error(err)
-
-            alert(
-                "Connection failed"
+                "Freighter wallet not found"
             )
         }
     }
@@ -61,25 +35,17 @@ export default function ConnectWallet({
     return (
 
         <button
-
-            type="button"
-
-            onClick={() => {
-                console.log("BUTTON FIRED")
-                connectWallet()
-            }}
-
+            onClick={handleConnect}
             className="
-        bg-indigo-600
-        hover:bg-indigo-500
-        transition-all
-        px-5 py-3
-        rounded-2xl
-        font-semibold
-        flex items-center
-        gap-2
-        relative z-50
-      "
+                bg-indigo-600
+                hover:bg-indigo-500
+                px-5 py-3
+                rounded-2xl
+                font-semibold
+                flex items-center
+                gap-2
+                transition-all
+            "
         >
 
             <Wallet size={18} />

@@ -1,22 +1,24 @@
 "use client"
 
 import {
-    connect,
+    getAddress,
     isConnected,
 } from "@stellar/freighter-api"
 
 export async function connectWallet() {
 
-    const installed =
+    const connected =
         await isConnected()
 
-    if (!installed.isConnected) {
+    if (!connected.isConnected) {
+
         throw new Error(
-            "Freighter not installed"
+            "Freighter wallet not installed"
         )
     }
 
-    const result = await connect()
+    const address =
+        await getAddress()
 
-    return result.publicKey
+    return address.address
 }
