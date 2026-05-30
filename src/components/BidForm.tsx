@@ -13,7 +13,9 @@ import {
     invokeContract,
 } from "@/lib/contract"
 
-import { toast } from "sonner"
+import {
+    toast,
+} from "sonner"
 
 export default function BidForm({
     publicKey,
@@ -33,7 +35,10 @@ export default function BidForm({
 
         try {
 
-            if (!amount || amount === "0") {
+            if (
+                !amount ||
+                amount === "0"
+            ) {
 
                 toast.error(
                     "Enter valid amount"
@@ -52,7 +57,7 @@ export default function BidForm({
                     BigInt(amount),
                     {
                         type: "i128",
-                    },
+                    }
                 )
 
             await invokeContract({
@@ -65,7 +70,7 @@ export default function BidForm({
             })
 
             toast.success(
-                "Bid placed!"
+                "Bid placed successfully!"
             )
 
             setAmount("")
@@ -77,15 +82,13 @@ export default function BidForm({
             console.error(error)
 
             toast.error(
-                "Bid failed"
+                "Failed to place bid"
             )
 
         } finally {
 
             setLoading(false)
-
         }
-
     }
 
     return (
@@ -103,10 +106,11 @@ export default function BidForm({
                 <label
                     htmlFor="amount"
                     className="
-            block text-sm
-            font-medium
-            text-zinc-300
-          "
+                        block
+                        text-sm
+                        font-medium
+                        text-zinc-300
+                    "
                 >
                     Bid Amount
                 </label>
@@ -116,7 +120,7 @@ export default function BidForm({
                     type="number"
                     step="1"
                     min="1"
-                    placeholder="Enter bid"
+                    placeholder="Enter bid amount"
                     value={amount}
                     onChange={(e) =>
                         setAmount(
@@ -124,17 +128,19 @@ export default function BidForm({
                         )
                     }
                     className="
-            mt-2
-            w-full
-            rounded-xl
-            border border-zinc-700
-            bg-zinc-900
-            px-4 py-3
-            text-white
-            outline-none
-            focus:ring-2
-            focus:ring-indigo-500
-          "
+                        mt-2
+                        w-full
+                        rounded-xl
+                        border
+                        border-zinc-700
+                        bg-zinc-900
+                        px-4
+                        py-3
+                        text-white
+                        outline-none
+                        focus:ring-2
+                        focus:ring-indigo-500
+                    "
                 />
 
             </div>
@@ -143,18 +149,20 @@ export default function BidForm({
                 type="submit"
                 disabled={loading}
                 className="
-          w-full
-          bg-indigo-600
-          hover:bg-indigo-500
-          disabled:opacity-50
-          text-white
-          py-3
-          rounded-xl
-          font-semibold
-          flex items-center
-          justify-center
-          gap-2
-        "
+                    w-full
+                    bg-indigo-600
+                    hover:bg-indigo-500
+                    disabled:opacity-50
+                    text-white
+                    py-3
+                    rounded-xl
+                    font-semibold
+                    flex
+                    items-center
+                    justify-center
+                    gap-2
+                    transition-all
+                "
             >
 
                 <Gavel size={18} />
